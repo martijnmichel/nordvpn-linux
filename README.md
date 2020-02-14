@@ -1,6 +1,12 @@
 # NordVPN Electron (nordvpn-electron)
 
-A Quasar Framework app
+Be warned, this app will make connecting to NordVPN as easy as on windows and macos.
+
+# How to use
+
+This is just an initial setup, more will come later.
+
+# If you want to contribute
 
 ## Install the dependencies
 ```bash
