@@ -1,6 +1,6 @@
 # NordVPN Electron (nordvpn-electron)
 
-Be warned, this app will make connecting to NordVPN as easy as on windows and macos.
+Be warned, this app will make connecting to NordVPN as easy as on windows and macos. It uses Electron and NordVPN-cli under the hood.
 
 # How to use
 
