@@ -1,23 +1,8 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-btn @click="getServers()">Get</q-btn>
-    <div class="row">
-      <div
-        class="col-xs-12"
-        v-for="(server, key) in $store.getters['servers']"
-        v-bind:key="`server-${key}`"
-      >
-        {{ server.name }}: {{ server.load }}
-
-        <q-btn @click="connect(server.hostname)">connect</q-btn>
-      </div>
-    </div>
-  </q-page>
+  <q-page class="flex flex-center"> </q-page>
 </template>
 
 <script>
-const { exec } = require("child_process");
-import _ from "lodash";
 export default {
   name: "PageIndex",
   created() {},
