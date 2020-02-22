@@ -12,7 +12,7 @@ Checking for npm/bin/npm-cli install at /snapshot/firepit/node_modules/npm/bin/n
 Found npm/bin/npm-cli install.
 Runtime binaries created.
 /usr/local/bin/firebase
-/usr/local/bin/firebase,/snapshot/firepit/firepit.js,init
+/usr/local/bin/firebase,/snapshot/firepit/firepit.js
 Checking for npm/bin/npm-cli install at /Users/mmichel/.cache/firebase/tools/lib/node_modules/npm/bin/npm-cli
 Checking for npm/bin/npm-cli install at /Users/mmichel/.cache/firebase/tools/node_modules/npm/bin/npm-cli
 Checking for npm/bin/npm-cli install at /snapshot/firepit/node_modules/npm/bin/npm-cli
