@@ -1,10 +1,14 @@
 <template>
-  <q-page class="flex flex-center"> </q-page>
+  <q-page class="flex flex-center">
+    <WorldMap />
+  </q-page>
 </template>
 
 <script>
+import WorldMap from "src/components/WorldMap.vue";
 export default {
   name: "PageIndex",
+  components: { WorldMap },
   created() {},
   methods: {
     connect(hostname) {

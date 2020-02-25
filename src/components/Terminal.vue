@@ -12,7 +12,10 @@ export default {
       window.term.open(document.getElementById("terminal-container"));
       window.term.loadAddon(fitAddon);
       fitAddon.fit();
-      window.term.write("uname -a", data => console.log(data));
+
+      console.log(window.ptyProcess);
+
+      window.ptyProcess.write("uname -a\r");
     });
   },
   methods: {}

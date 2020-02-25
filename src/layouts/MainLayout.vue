@@ -15,7 +15,7 @@
           NordVPN
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <Status />
       </q-toolbar>
     </q-header>
 
@@ -26,12 +26,8 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item-label header class="text-grey-8">Essential Links</q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item-label header class="text-grey-8">Settings</q-item-label>
+        <Settings />
       </q-list>
     </q-drawer>
 
@@ -78,15 +74,17 @@
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink";
+import Settings from "components/Settings";
 import Terminal from "src/components/Terminal.vue";
+import Status from "src/components/Status";
 
 export default {
   name: "MainLayout",
 
   components: {
-    EssentialLink,
-    Terminal
+    Settings,
+    Terminal,
+    Status
   },
 
   watch: {

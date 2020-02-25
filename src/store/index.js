@@ -23,11 +23,19 @@ export default function(/* { ssrContext } */) {
     },
 
     state: {
-      servers: []
+      servers: [],
+      status: {},
+      settings: {}
     },
     mutations: {
       setServers: (state, data) => {
         state.servers = data;
+      },
+      setStatus: (state, data) => {
+        state.status = data;
+      },
+      setSettings: (state, data) => {
+        state.settings = data;
       }
     },
     actions: {},
