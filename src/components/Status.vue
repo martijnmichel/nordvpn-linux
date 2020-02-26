@@ -56,7 +56,7 @@ export default {
       });
     },
     disconnect() {
-      if (this.status.Status === "Connected") {
+      if (this.status.status === "Connected") {
         exec("nordvpn disconnect", (err, stdout, esterr) => {
           this.getStatus();
         });

@@ -24,6 +24,7 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
+      :width="500"
     >
       <q-list>
         <q-item-label header class="text-grey-8">Settings</q-item-label>
@@ -35,9 +36,8 @@
       <div class="row">
         <div class="col-xs-11">
           <q-tabs v-model="tab" dense align="left" switch-indicator>
-            <q-tab name="mails" label="Mails" />
-            <q-tab name="alarms" label="Alarms" />
-            <q-tab name="movies" label="Movies" />
+            <q-tab name="terminal" label="Terminal" />
+            <q-tab name="connection" label="Connection" />
           </q-tabs>
         </div>
         <div class="col-xs-1 text-right">
@@ -50,18 +50,22 @@
 
       <div v-if="bottomNav">
         <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="mails" dense class="q-pa-xs">
+          <q-tab-panel name="terminal" dense class="q-pa-xs">
             <Terminal />
           </q-tab-panel>
 
-          <q-tab-panel name="alarms">
-            <div class="text-h6">Alarms</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-
-          <q-tab-panel name="movies">
-            <div class="text-h6">Movies</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <q-tab-panel name="connection" dense class="q-pa-xs">
+            <q-markup-table flat>
+              <tbody>
+                <tr
+                  v-for="(value, setting) in $store.state.status"
+                  v-bind:key="setting"
+                >
+                  <td class="text-subtitle2 text-capitalize">{{ setting }}</td>
+                  <td>{{ value }}</td>
+                </tr>
+              </tbody></q-markup-table
+            >
           </q-tab-panel>
         </q-tab-panels>
       </div>

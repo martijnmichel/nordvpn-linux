@@ -26,6 +26,19 @@
     </q-item>
     <q-item tag="label" v-ripple>
       <q-item-section>
+        <q-item-label>Obfuscate</q-item-label>
+        <q-item-label caption
+          >When enabled, this feature will allow to bypass network traffic
+          sensors that aim to detect usage of protocol and log, throttle or
+          block it.</q-item-label
+        >
+      </q-item-section>
+      <q-item-section avatar>
+        <q-toggle v-model="settings.obfuscate" />
+      </q-item-section>
+    </q-item>
+    <q-item tag="label" v-ripple>
+      <q-item-section>
         <q-item-label>Kill switch</q-item-label>
         <q-item-label caption
           >This security feature blocks your device from the internet while not
@@ -44,6 +57,50 @@
       </q-item-section>
       <q-item-section avatar>
         <q-toggle v-model="settings.notify" />
+      </q-item-section>
+    </q-item>
+    <q-item tag="label" v-ripple>
+      <q-item-section>
+        <q-item-label>Protocol</q-item-label>
+        <q-item-label caption>Sets the protocol to use.</q-item-label>
+      </q-item-section>
+      <q-item-section avatar>
+        <q-btn-toggle
+          v-model="settings.protocol"
+          toggle-color="primary"
+          :options="[
+            { label: 'TCP', value: 'TCP' },
+            { label: 'UDP', value: 'UDP' }
+          ]"
+        />
+      </q-item-section>
+    </q-item>
+    <q-item tag="label" v-ripple>
+      <q-item-section>
+        <q-item-label>Technology</q-item-label>
+        <q-item-label caption>Sets the technology to use.</q-item-label>
+      </q-item-section>
+      <q-item-section avatar>
+        <q-btn-toggle
+          v-model="settings.technology"
+          toggle-color="primary"
+          :options="[
+            { label: 'OpenVPN', value: 'OpenVPN' },
+            { label: 'NordLynx', value: 'NordLynx' }
+          ]"
+        />
+      </q-item-section>
+    </q-item>
+    <q-item tag="label" v-ripple v-if="!settings.cybersec">
+      <q-item-section>
+        <q-item-label>DNS</q-item-label>
+        <q-item-label caption
+          >Sets custom DNS servers. <br />
+          (Disabled when Cybersec is turned on.)</q-item-label
+        >
+      </q-item-section>
+      <q-item-section avatar>
+        <q-input v-model="settings.dns" outlined dense @blur="saveDNS()" />
       </q-item-section>
     </q-item>
   </q-list>
@@ -76,18 +133,26 @@ export default {
     this.getSettings();
   },
   watch: {
-    "settings.autoconnect": function(val) {
-      exec(`nordvpn set autoconnect ${val}`, (err, stdout, stderr) => {
-        this.getSettings();
-      });
-    },
-    "settings.cybersec": function(val) {
-      exec(`nordvpn set cybersec ${val}`, (err, stdout, stderr) => {
-        this.getSettings();
-      });
+    settings: {
+      deep: true,
+      handler: function(val) {
+        _.each(val, (value, setting) => {
+          if (setting === "dns") return false;
+          if (value !== this.$store.state.settings[setting]) {
+            exec(`nordvpn set ${setting} ${value}`, (err, stdout, stderr) => {
+              this.getSettings();
+            });
+          }
+        });
+      }
     }
   },
   methods: {
+    saveDNS() {
+      exec(`nordvpn set dns ${this.settings.dns}`, (err, stdout, stderr) => {
+        this.getSettings();
+      });
+    },
     getSettings() {
       exec("nordvpn settings", (err, stdout, esterr) => {
         let settings = {};
@@ -100,7 +165,8 @@ export default {
           settings[
             line[0]
               .replace(/-/i, "")
-              .replace(" ", "")
+              .replace(/ /i, "")
+              .trim()
               .toLowerCase()
           ] = value;
         });

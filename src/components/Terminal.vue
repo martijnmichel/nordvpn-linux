@@ -13,9 +13,9 @@ export default {
       window.term.loadAddon(fitAddon);
       fitAddon.fit();
 
-      console.log(window.ptyProcess);
+      //console.log(window.ptyProcess);
 
-      window.ptyProcess.write("uname -a\r");
+      //window.ptyProcess.write("uname -a\r");
     });
   },
   methods: {}
