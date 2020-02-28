@@ -1,15 +1,19 @@
 <template>
-  <q-chip
-    clickable
-    ripple
-    @click="disconnect()"
-    v-if="status.status === 'Connected'"
-  >
-    {{ status.status }} to {{ status.country }}
-  </q-chip>
-  <q-chip clickable ripple @click="disconnect()" v-else>
-    {{ status.status }}
-  </q-chip>
+  <div>
+    <q-chip v-if="status.status === 'Connected'">
+      {{ status.status }} to {{ status.country }}
+    </q-chip>
+    <q-chip clickable ripple v-else>
+      {{ status.status }}
+    </q-chip>
+    <q-chip
+      clickable
+      ripple
+      @click="disconnect()"
+      v-if="status.status === 'Connected'"
+      ><q-icon name="close"
+    /></q-chip>
+  </div>
 </template>
 
 <script>
