@@ -12,6 +12,9 @@ This is just an initial setup, more will come later.
 ## Dependencies
 NordVPN CLI: Install the nordvpn-cli for your distro. More info is on their website.
 
+## Install
+Extract the zip file, go into the newly created dir and click on NordVPN Electron binary.
+
 ## Login
 Login to nordvpn is still required to go through the terminal. You can use the built-in terminal or your favorite os-terminal. Type: nordvpn login (enter your details after hitting enter)
 
