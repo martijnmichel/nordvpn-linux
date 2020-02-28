@@ -9,7 +9,11 @@
     "build_always": false,
     "__internal": {
       "dev": {},
-      "build": {}
+      "build": {
+        "electron": {
+          "iconHash": "8c6875338ac838d820068dbbea2cdf6f"
+        }
+      }
     }
   }
 }
