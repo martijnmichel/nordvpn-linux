@@ -2,6 +2,8 @@
 
 Be warned, this app will make connecting to NordVPN as easy as on windows and macos. It uses Electron and NordVPN-cli under the hood.
 
+![NordVPN Linux](/screens/Screenshot_20200228_083241.png?raw=true "Optional Title")
+
 # How to use
 
 This is just an initial setup, more will come later.
