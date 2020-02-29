@@ -13,7 +13,7 @@ This is just an initial setup, more will come later.
 NordVPN CLI: Install the nordvpn-cli for your distro. More info is on their website.
 
 ## Install
-Extract the zip file, go into the newly created dir and click on NordVPN Electron binary.
+Double-click on your downloaded .AppImage or .snap binary.
 
 ## Login
 The app will prompt your nordvpn credentials when opening the app or trying to connect to a server while youre not logged in. Credentials are saved automagically.
