@@ -2,11 +2,7 @@
 import "xterm/css/xterm.css";
 
 // "async" is optional
-export default async (
-  {
-    /* app, router, Vue, ... */
-  }
-) => {
+export default async ({ app, router, store, Vue }) => {
   // something to do
 
   var os = require("os");
@@ -33,7 +29,9 @@ export default async (
   ptyProcess.on("data", function(data) {
     term.write(data);
   });
-  term.onData(data => ptyProcess.write(data));
+  term.onData(data => {
+    ptyProcess.write(data);
+  });
 
   window.term = term;
   window.ptyProcess = ptyProcess;

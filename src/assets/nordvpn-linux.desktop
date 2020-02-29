@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=NordVPN Linux
+Exec=/opt/nordvpn-linux/
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Network;WebBrowser;
+X-Desktop-File-Install-Version=0.15
+Icon=/usr/share/icons/nordvpn-linux.png

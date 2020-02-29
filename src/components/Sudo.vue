@@ -1,0 +1,41 @@
+<template>
+  <q-dialog v-model="dialog" persistent>
+    <q-card>
+      <q-card-section title>Please insert your admin password</q-card-section>
+      <q-card-section>
+        <q-input label="Password" v-model="password" @blur="send()" outlined />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script>
+export default {
+  name: "Sudo",
+  data() {
+    return {
+      password: ""
+    };
+  },
+  props: {
+    dialog: {
+      type: Boolean,
+      default: false
+    }
+  },
+  created() {
+    window.ptyProcess.on("data", data => {
+      if (data.includes("sudo")) {
+        this.$root.$emit("update:sudo", true);
+      }
+    });
+  },
+
+  methods: {
+    send() {
+      window.ptyProcess.write(`${this.password}\r`);
+      this.$root.$emit("update:sudo", false);
+    }
+  }
+};
+</script>

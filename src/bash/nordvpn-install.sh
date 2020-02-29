@@ -2,4 +2,7 @@
 
 echo "Installing NordVPN..."
 
-nordvpn status
+echo $1
+
+sudo cp src/assets/nordvpn-linux.desktop /usr/share/applications/nordvpn-linux.desktop
+sudo cp src/assets/app-icon.png /usr/share/icons/nordvpn-linux.png

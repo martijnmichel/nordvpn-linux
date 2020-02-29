@@ -26,10 +26,17 @@
       content-class="bg-grey-1"
       :width="500"
     >
-      <q-list>
-        <q-item-label header class="text-grey-8">Settings</q-item-label>
+      <q-expansion-item label="Options" icon="account_circle" group="1">
+        <Options />
+      </q-expansion-item>
+      <q-expansion-item
+        default-opened
+        label="Settings"
+        icon="settings"
+        group="1"
+      >
         <Settings />
-      </q-list>
+      </q-expansion-item>
     </q-drawer>
 
     <q-footer>
@@ -74,6 +81,8 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <Sudo :dialog="sudo" />
   </q-layout>
 </template>
 
@@ -81,20 +90,34 @@
 import Settings from "components/Settings";
 import Terminal from "src/components/Terminal.vue";
 import Status from "src/components/Status";
-
+import Sudo from "src/components/Sudo.vue";
+import Options from "src/components/Options.vue";
 export default {
   name: "MainLayout",
 
   components: {
     Settings,
     Terminal,
-    Status
+    Status,
+    Sudo,
+    Options
   },
 
   watch: {
     tab() {
       if (this.tab !== null) this.bottomNav = true;
     }
+  },
+
+  mounted() {
+    this.$root.$on("update:sudo", v => {
+      this.sudo = v;
+      console.log("updated sudo");
+    });
+  },
+
+  beforeDestroy() {
+    this.$root.$off("update:sudo");
   },
 
   methods: {
@@ -116,6 +139,7 @@ export default {
       leftDrawerOpen: false,
       bottomNav: false,
       tab: null,
+      sudo: false,
       essentialLinks: [
         {
           title: "Docs",
