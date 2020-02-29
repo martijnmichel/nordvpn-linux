@@ -31,6 +31,7 @@ function createWindow() {
     width: process.env.NODE_ENV === "production" ? 800 : 1200,
     height: 600,
     useContentSize: true,
+    resizable: process.env.NODE_ENV === "production" ? false : true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

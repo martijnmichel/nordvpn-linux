@@ -4,11 +4,17 @@
       <q-item-section>
         <q-item-label>Menu item</q-item-label>
         <q-item-label caption
-          >Create a menu item to easily start NordVPN Linux</q-item-label
+          >Create a menu item to easily start NordVPN Linux<br />
+          --To be implemented</q-item-label
         >
       </q-item-section>
       <q-item-section avatar>
-        <q-btn color="primary" @click="createMenuItem()" label="Create" />
+        <q-btn
+          color="primary"
+          @click="createMenuItem()"
+          label="Create"
+          disabled
+        />
       </q-item-section>
     </q-item>
   </q-list>
@@ -23,25 +29,18 @@ export default {
     };
   },
   computed: {},
-
+  mounted() {},
   methods: {
     async createMenuItem() {
-      // destination.txt will be created or overwritten by default.
+      var path = require("path");
+      var appDir = path.dirname(__filename);
+
       await window.ptyProcess.write(
-        "sh src/bash/nordvpn-install.sh /bla\r",
+        `../statics/bash/nordvpn-install.sh ${appDir}\r`,
         (err, stdout, stderr) => {
           if (err) throw err;
         }
       );
-      //this.$root.$emit("update:sudo", true);
-      /*
-      window.ptyProcess.on("data", data => {
-        if (data.includes("password")) {
-          this.$root.$emit("update:sudo", true);
-          window.ptyProcess.off("data");
-        }
-      });
-      */
     }
   }
 };

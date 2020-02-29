@@ -12,7 +12,14 @@
         />
 
         <q-toolbar-title>
-          NordVPN
+          <q-img
+            src="statics/nordvpn-for-pc-windows-mac.png"
+            height="32px"
+            width="32px"
+          />
+          <span style="font-size: 0.8em; margin-left: 12px"
+            >NordVPN for Linux</span
+          >
         </q-toolbar-title>
 
         <Status />
@@ -26,6 +33,22 @@
       content-class="bg-grey-1"
       :width="500"
     >
+      <q-toolbar class="bg-grey-3">
+        <q-img
+          src="statics/nordvpn-for-pc-windows-mac.png"
+          height="32px"
+          width="32px"
+        />
+        <q-space />
+        <q-btn
+          icon="logout"
+          round
+          flat
+          dense
+          @click="logout()"
+          v-if="$store.state.isLoggedIn"
+        />
+      </q-toolbar>
       <q-expansion-item label="Options" icon="account_circle" group="1">
         <Options />
       </q-expansion-item>
@@ -83,6 +106,7 @@
     </q-page-container>
 
     <Sudo :dialog="sudo" />
+    <Login :dialog="login" />
   </q-layout>
 </template>
 
@@ -91,6 +115,7 @@ import Settings from "components/Settings";
 import Terminal from "src/components/Terminal.vue";
 import Status from "src/components/Status";
 import Sudo from "src/components/Sudo.vue";
+import Login from "src/components/Login.vue";
 import Options from "src/components/Options.vue";
 export default {
   name: "MainLayout",
@@ -100,7 +125,8 @@ export default {
     Terminal,
     Status,
     Sudo,
-    Options
+    Options,
+    Login
   },
 
   watch: {
@@ -112,12 +138,15 @@ export default {
   mounted() {
     this.$root.$on("update:sudo", v => {
       this.sudo = v;
-      console.log("updated sudo");
+    });
+    this.$root.$on("update:login", v => {
+      this.login = v;
     });
   },
 
   beforeDestroy() {
     this.$root.$off("update:sudo");
+    this.$root.$off("update:login");
   },
 
   methods: {
@@ -131,6 +160,12 @@ export default {
           this.tab = "mails";
         }
       }
+    },
+    logout() {
+      window.ptyProcess.write("nordvpn logout\r");
+    },
+    signin() {
+      window.ptyProcess.write("nordvpn login\r");
     }
   },
 
@@ -140,6 +175,7 @@ export default {
       bottomNav: false,
       tab: null,
       sudo: false,
+      login: false,
       essentialLinks: [
         {
           title: "Docs",

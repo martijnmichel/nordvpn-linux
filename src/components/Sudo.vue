@@ -3,7 +3,23 @@
     <q-card>
       <q-card-section title>Please insert your admin password</q-card-section>
       <q-card-section>
-        <q-input label="Password" v-model="password" @blur="send()" outlined />
+        <q-input
+          type="password"
+          v-model="password"
+          @keyup.enter.native="send()"
+          outlined
+        >
+          <template v-slot:append>
+            <q-btn
+              icon="chevron_right"
+              round
+              flat
+              dense
+              class="bg-grey-3"
+              @click="send()"
+            />
+          </template>
+        </q-input>
       </q-card-section>
     </q-card>
   </q-dialog>
