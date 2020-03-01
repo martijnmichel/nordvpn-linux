@@ -26,6 +26,7 @@ export default function(/* { ssrContext } */) {
       servers: [],
       status: {},
       settings: {},
+      account: {},
       isLoggedIn: false
     },
     mutations: {
@@ -37,6 +38,9 @@ export default function(/* { ssrContext } */) {
       },
       setSettings: (state, data) => {
         state.settings = data;
+      },
+      setAccount: (state, data) => {
+        state.account = data;
       },
       setLogin: (state, data) => {
         state.isLoggedIn = data;

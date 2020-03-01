@@ -21,6 +21,14 @@ import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 export default {
   name: "WorldMap",
+  data() {
+    return {
+      chart: undefined
+    };
+  },
+  beforeDestroy() {
+    this.chart.dispose();
+  },
   mounted() {
     let map = document.getElementById("world-map");
     map.style.height = window.innerHeight;
@@ -33,22 +41,22 @@ export default {
     // Themes end
 
     // Create map instance
-    let chart = am4core.create(this.$refs.chartdiv, am4maps.MapChart);
+    this.chart = am4core.create(this.$refs.chartdiv, am4maps.MapChart);
 
     // Set map definition
-    chart.geodata = am4geodata_worldLow;
+    this.chart.geodata = am4geodata_worldLow;
 
     // Set projection
-    chart.projection = new am4maps.projections.Miller();
+    this.chart.projection = new am4maps.projections.Miller();
 
-    chart.homeZoomLevel = 5;
-    chart.homeGeoPoint = {
+    this.chart.homeZoomLevel = 5;
+    this.chart.homeGeoPoint = {
       latitude: 52,
       longitude: 11
     };
 
     // Create map polygon series
-    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    let polygonSeries = this.chart.series.push(new am4maps.MapPolygonSeries());
 
     // Exclude Antartica
     polygonSeries.exclude = ["AQ"];
@@ -60,30 +68,55 @@ export default {
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = "{name}";
     polygonTemplate.polygon.fillOpacity = 0.6;
+    polygonTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer;
 
     // Create hover state and set alternative fill color
     let hs = polygonTemplate.states.create("hover");
-    hs.properties.fill = chart.colors.getIndex(0);
+    hs.properties.fill = this.chart.colors.getIndex(0);
 
     let as = polygonTemplate.states.create("active");
-    if (this.$store.state.Country) {
-      as.properties.fill = chart.colors.getIndex(0);
-    }
+    as.properties.fill = this.chart.colors.getIndex(0);
 
-    polygonTemplate.events.on("hit", ev => {
+    this.chart.events.on("ready", () => {
+      if (!this.$store.state.status.country) return false;
+      const axios = require("axios");
+
+      // Make a request for a user with a given ID
+      axios
+        .get(
+          `https://restcountries.eu/rest/v2/name/${this.$store.state.status.country}?fullText=true`
+        )
+        .then(function(response) {
+          // handle success
+          polygonSeries.getPolygonById(
+            response.data[0].alpha2Code
+          ).isActive = true;
+        });
+    });
+
+    polygonTemplate.events.on("hit", async ev => {
+      //polygonTemplate.setStateOnChildren = true;
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
+      //ev.target.isActive = !ev.target.isActive;
+
+      polygonSeries.mapPolygons.each(function(item) {
+        if (item != ev.target) {
+          item.isActive = false;
+        } else {
+          ev.target.isActive = !ev.target.isActive;
+        }
+      });
 
       // get object info
-      console.log(ev.target.dataItem.dataContext.id);
-
       let landcode = ev.target.dataItem.dataContext.id;
-      window.ptyProcess.write(`nordvpn connect ${landcode}\r`);
+      await window.ptyProcess.write(`nordvpn connect ${landcode}\r`);
+
       this.$root.$emit("updateStatus");
     });
 
     // Add image series
-    let imageSeries = chart.series.push(new am4maps.MapImageSeries());
+    let imageSeries = this.chart.series.push(new am4maps.MapImageSeries());
     imageSeries.mapImages.template.propertyFields.longitude = "longitude";
     imageSeries.mapImages.template.propertyFields.latitude = "latitude";
     imageSeries.mapImages.template.tooltipText = "{title}";

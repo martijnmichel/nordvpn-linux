@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { exec } from "child_process";
 export default {
   name: "Login",
   data() {
@@ -73,6 +74,7 @@ export default {
        */
 
       if (data.includes("Username or password is not correct")) {
+        // INCORRECT
         this.progress = "username";
         this.$q.notify({
           type: "negative",
@@ -80,6 +82,7 @@ export default {
         });
         this.$root.$emit("update:login", true);
       } else if (data.includes("Too many login attempts.")) {
+        // TOO MANY ATTEMPTS
         this.progress = "username";
         window.ptyProcess.write("nordvpn login\r");
         this.$q.notify({
@@ -88,15 +91,39 @@ export default {
         });
         this.$root.$emit("update:login", true);
       } else if (data.includes("Welcome to NordVPN!")) {
+        // SUCCESS
         this.$q.notify({
           type: "positive",
           message: `Welcome to NordVPN!`
         });
+        this.getAccount();
         this.$store.commit("setLogin", true);
       } else if (data.includes("You are logged out.")) {
+        // LOGGED OUT
         this.$store.commit("setLogin", false);
       } else if (data.includes("You are already logged in")) {
+        // LOGGED IN
         this.$store.commit("setLogin", true);
+        this.$q.notify({
+          type: "positive",
+          message: `Welcome back to NordVPN!`
+        });
+        this.getAccount();
+      } else if (data.includes("Whoops! We couldn't connect you")) {
+        this.$q.notify({
+          type: "negative",
+          message: `Whoops! We couldn't connect you to this country. Please try again. If the problem persists, contact our customer support.`
+        });
+      } else if (data.includes("You are connected to")) {
+        this.$q.notify({
+          type: "positive",
+          message: `You are succesfully connected.`
+        });
+      } else if (data.includes("You are disconnected from NordVPN.")) {
+        this.$q.notify({
+          type: "positive",
+          message: `You have succesfully disconnected from NordVPN.`
+        });
       }
 
       if (data.includes("Please enter your login details")) {
@@ -111,6 +138,24 @@ export default {
   mounted() {},
 
   methods: {
+    getAccount() {
+      exec("nordvpn account", (err, stdout, esterr) => {
+        if (stdout) {
+          let account = {};
+          _.each(stdout.split("\n"), d => {
+            if (!d) return false;
+            let line = d.split(": ");
+            account[
+              line[0]
+                .replace(/-/i, "")
+                .replace(/ /i, "")
+                .toLowerCase()
+            ] = line[1];
+          });
+          this.$store.commit("setAccount", account);
+        }
+      });
+    },
     sendUsr() {
       window.ptyProcess.write(`${this.username}\r`);
       this.progress = "password";

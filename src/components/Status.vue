@@ -59,11 +59,10 @@ export default {
         this.$store.commit("setStatus", status);
       });
     },
-    disconnect() {
+    async disconnect() {
       if (this.status.status === "Connected") {
-        exec("nordvpn disconnect", (err, stdout, esterr) => {
-          this.getStatus();
-        });
+        await window.ptyProcess.write("nordvpn disconnect\r");
+        this.getStatus();
       }
     }
   }

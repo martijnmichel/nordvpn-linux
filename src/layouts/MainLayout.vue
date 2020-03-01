@@ -49,6 +49,16 @@
           v-if="$store.state.isLoggedIn"
         />
       </q-toolbar>
+      <q-item v-if="$store.state.isLoggedIn">
+        <q-item-section>
+          Logged in as: <br />
+          VPN:
+        </q-item-section>
+        <q-item-section>
+          {{ $store.state.account.emailaddress }}<br />
+          {{ $store.state.account.vpnservice }}
+        </q-item-section>
+      </q-item>
       <q-expansion-item label="Options" icon="account_circle" group="1">
         <Options />
       </q-expansion-item>
