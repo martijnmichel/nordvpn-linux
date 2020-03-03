@@ -42,7 +42,7 @@ function createWindow() {
     }
   });
 
-  if (process.env.NODE_ENV === "production") mainWindow.setMenu(null);
+  //if (process.env.NODE_ENV === "production") mainWindow.setMenu(null);
 
   mainWindow.loadURL(process.env.APP_URL);
 
