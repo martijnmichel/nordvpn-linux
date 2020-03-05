@@ -1,13 +1,14 @@
 // import something here
 import "xterm/css/xterm.css";
 
+import os from "os";
+const pty = require("node-pty-prebuilt-multiarch");
+import { Terminal } from "xterm";
+
 // "async" is optional
 export default async ({ app, router, store, Vue }) => {
   // something to do
 
-  var os = require("os");
-  var pty = require("node-pty");
-  var Terminal = require("xterm").Terminal;
   var shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
   var ptyProcess = pty.spawn(shell, ["-l"], {
@@ -26,7 +27,7 @@ export default async ({ app, router, store, Vue }) => {
     fontSize: 12
   });
 
-  ptyProcess.on("data", function(data) {
+  ptyProcess.onData(function(data) {
     term.write(data);
   });
   term.onData(data => {

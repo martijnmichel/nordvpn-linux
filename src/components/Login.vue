@@ -67,20 +67,25 @@ export default {
   },
   async created() {
     await window.ptyProcess.write("nordvpn login\r");
-    window.ptyProcess.on("data", data => {
+    window.ptyProcess.onData(data => {
       console.log(data);
       /**
        * Catch some response from nordvpn cli
        */
 
       if (data.includes("Username or password is not correct")) {
-        // INCORRECT
         this.progress = "username";
+        this.$root.$emit("update:login", true);
         this.$q.notify({
           type: "negative",
           message: `Username or password is not correct.`
         });
-        this.$root.$emit("update:login", true);
+
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("Too many login attempts.")) {
         // TOO MANY ATTEMPTS
         this.progress = "username";
@@ -90,6 +95,11 @@ export default {
           message: `Too many login attempts, please start over.`
         });
         this.$root.$emit("update:login", true);
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("Welcome to NordVPN!")) {
         // SUCCESS
         this.$q.notify({
