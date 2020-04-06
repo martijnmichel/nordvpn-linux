@@ -1,4 +1,11 @@
-import { app, BrowserWindow, nativeTheme } from "electron";
+import {
+  app,
+  BrowserWindow,
+  nativeTheme,
+  nativeImage,
+  Tray,
+  Menu,
+} from "electron";
 
 try {
   if (
@@ -22,7 +29,7 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
-
+let tray;
 function createWindow() {
   /**
    * Initial window options
@@ -35,12 +42,22 @@ function createWindow() {
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
-      nodeIntegration: QUASAR_NODE_INTEGRATION
+      nodeIntegration: QUASAR_NODE_INTEGRATION,
 
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')
-    }
+    },
   });
+
+  tray = new Tray(nativeImage.createFromPath("../icons/icon.png"));
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+    { label: "Item3", type: "radio", checked: true },
+    { label: "Item4", type: "radio" },
+  ]);
+  tray.setToolTip("This is my application.");
+  tray.setContextMenu(contextMenu);
 
   //if (process.env.NODE_ENV === "production") mainWindow.setMenu(null);
 
