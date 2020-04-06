@@ -2,10 +2,12 @@ import {
   app,
   BrowserWindow,
   nativeTheme,
-  nativeImage,
-  Tray,
-  Menu,
+  //nativeImage,
+  //Tray,
+  //Menu,
 } from "electron";
+
+const trayWindow = require("electron-tray-window");
 
 try {
   if (
@@ -48,17 +50,24 @@ function createWindow() {
       // preload: path.resolve(__dirname, 'electron-preload.js')
     },
   });
-
-  tray = new Tray(nativeImage.createFromPath("../icons/icon.png"));
+  /*
+  tray = new Tray(nativeImage.createFromPath("../icons/linux-128x128.png.png"));
+  let trayContent = new BrowserWindow();
+  trayContent.loadURL("https://google.nl");
   const contextMenu = Menu.buildFromTemplate([
     { label: "Item1", type: "radio" },
     { label: "Item2", type: "radio" },
     { label: "Item3", type: "radio", checked: true },
-    { label: "Item4", type: "radio" },
   ]);
   tray.setToolTip("This is my application.");
-  tray.setContextMenu(contextMenu);
+  trayWindow.setOptions({ tray: tray, window: trayContent });
 
+  /*
+  trayWindow.setOptions({
+    trayIconPath: nativeImage.createFromPath("../icons/linux-128x128.png.png"),
+    windowUrl: "./tray.html",
+  });
+*/
   //if (process.env.NODE_ENV === "production") mainWindow.setMenu(null);
 
   mainWindow.loadURL(process.env.APP_URL);
