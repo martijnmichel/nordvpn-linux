@@ -76,6 +76,13 @@ module.exports = function(ctx) {
           test: /\.node$/,
           loader: "native-ext-loader"
         });
+
+        cfg.externals = {
+          ...cfg.externals, // This adds the existing alias
+
+          // Add your own alias like this
+          "node-pty": "commonjs node-pty"
+        };
       }
     },
 
