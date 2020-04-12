@@ -56,7 +56,8 @@ export default {
     return {
       password: this.$q.localStorage.getItem("nordvpnPassword", this.password),
       username: this.$q.localStorage.getItem("nordvpnUsername", this.username),
-      progress: "username"
+      progress: "username",
+      status: undefined
     };
   },
   props: {
@@ -65,10 +66,12 @@ export default {
       default: false
     }
   },
-  async created() {
-    await window.ptyProcess.write("nordvpn login\r");
-    window.ptyProcess.onData(data => {
+  created() {
+    window.ptyProcess.write("nordvpn login\r");
+
+    window.ptyProcess.onData(async data => {
       console.log(data);
+
       /**
        * Catch some response from nordvpn cli
        */
@@ -108,12 +111,18 @@ export default {
         });
         this.getAccount();
         this.$store.commit("setLogin", true);
+
+        this.setStatus();
       } else if (data.includes("You are logged out.")) {
         // LOGGED OUT
         this.$store.commit("setLogin", false);
+        this.setStatus();
       } else if (data.includes("You are already logged in")) {
         // LOGGED IN
         this.$store.commit("setLogin", true);
+
+        this.setStatus();
+
         this.$q.notify({
           type: "positive",
           message: `Welcome back to NordVPN!`
@@ -124,12 +133,16 @@ export default {
           type: "negative",
           message: `Whoops! We couldn't connect you to this country. Please try again. If the problem persists, contact our customer support.`
         });
+
+        this.setStatus();
       } else if (data.includes("You are connected to")) {
+        this.setStatus();
         this.$q.notify({
           type: "positive",
           message: `You are succesfully connected.`
         });
       } else if (data.includes("You are disconnected from NordVPN.")) {
+        this.setStatus();
         this.$q.notify({
           type: "positive",
           message: `You have succesfully disconnected from NordVPN.`
@@ -145,9 +158,30 @@ export default {
   beforeDestroy() {
     this.progress = "username";
   },
-  mounted() {},
+  mounted() {
+    this.$root.$on("update:status", () => {
+      this.setStatus();
+    });
+  },
+
+  beforeDestroy() {
+    this.$root.$off("update:status");
+  },
 
   methods: {
+    async setStatus() {
+      exec("nordvpn status", (err, stdout, stderr) => {
+        if (err || stderr) return false;
+        let status = {};
+        _.each(stdout.split("\n"), d => {
+          if (!d) return false;
+          let line = d.split(": ");
+          status[line[0].replace(/-/i, "").toLowerCase()] = line[1];
+        });
+        this.$store.commit("setStatus", status);
+        this.$q.electron.ipcRenderer.send("update:status", status);
+      });
+    },
     getAccount() {
       exec("nordvpn account", (err, stdout, esterr) => {
         if (stdout) {

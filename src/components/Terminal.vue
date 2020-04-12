@@ -4,6 +4,20 @@
 
 <script>
 import { FitAddon } from "xterm-addon-fit";
+
+require("electron").ipcRenderer.on("terminal:command", function(
+  event,
+  message
+) {
+  switch (message) {
+    case "disconnect":
+      window.ptyProcess.write("nordvpn disconnect\r");
+    default:
+      return;
+  }
+  // Prints "whoooooooh!"
+});
+
 export default {
   name: "Terminal",
   created() {
@@ -18,6 +32,7 @@ export default {
       //window.ptyProcess.write("uname -a\r");
     });
   },
+  mounted() {},
   methods: {}
 };
 </script>

@@ -1,6 +1,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 const path = require("path");
+
 module.exports = function(ctx) {
   return {
     // app boot file (/src/boot)
@@ -78,9 +79,7 @@ module.exports = function(ctx) {
         });
 
         cfg.externals = {
-          ...cfg.externals, // This adds the existing alias
-
-          // Add your own alias like this
+          ...cfg.externals,
           "node-pty": "commonjs node-pty"
         };
       }

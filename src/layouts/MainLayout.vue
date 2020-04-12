@@ -70,12 +70,19 @@
       >
         <Settings />
       </q-expansion-item>
+      <q-btn @click="test()" />
     </q-drawer>
 
     <q-footer>
       <div class="row">
         <div class="col-xs-11">
-          <q-tabs v-model="tab" dense align="left" switch-indicator>
+          <q-tabs
+            @input="$root.$emit('update:status')"
+            v-model="tab"
+            dense
+            align="left"
+            switch-indicator
+          >
             <q-tab name="terminal" label="Terminal" />
             <q-tab name="connection" label="Connection" />
           </q-tabs>
@@ -127,6 +134,7 @@ import Status from "src/components/Status";
 import Sudo from "src/components/Sudo.vue";
 import Login from "src/components/Login.vue";
 import Options from "src/components/Options.vue";
+
 export default {
   name: "MainLayout",
 
@@ -160,6 +168,7 @@ export default {
   },
 
   methods: {
+    test() {},
     toggleBottomNav() {
       if (this.bottomNav === true) {
         this.bottomNav = false;
