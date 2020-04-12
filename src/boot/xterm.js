@@ -2,7 +2,8 @@
 import "xterm/css/xterm.css";
 
 import os from "os";
-const pty = require("node-pty-prebuilt-multiarch");
+const pty = require("node-pty");
+//import pty from "node-addon-loader!./pty.node";
 import { Terminal } from "xterm";
 
 // "async" is optional

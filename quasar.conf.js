@@ -1,6 +1,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+const path = require("path");
 module.exports = function(ctx) {
   return {
     // app boot file (/src/boot)
@@ -70,6 +70,11 @@ module.exports = function(ctx) {
           options: {
             formatter: require("eslint").CLIEngine.getFormatter("stylish")
           }
+        });
+
+        cfg.module.rules.push({
+          test: /\.node$/,
+          loader: "native-ext-loader"
         });
       }
     },
@@ -162,7 +167,10 @@ module.exports = function(ctx) {
         // https://www.electron.build/configuration/configuration
 
         appId: "nordvpn-linux",
-        target: ["AppImage"]
+        target: ["AppImage"],
+        npmRebuild: true,
+        buildDependenciesFromSource: true
+        //nodeGypRebuild: true
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
