@@ -1,8 +1,8 @@
 {
   "name": "nordvpn-electron",
-  "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "NordVPN Electron",
+  "version": "0.6.0",
+  "description": "NordVPN for Linux",
+  "productName": "NordVPN for Linux",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "martijn michel",
