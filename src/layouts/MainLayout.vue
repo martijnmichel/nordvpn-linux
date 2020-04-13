@@ -21,8 +21,6 @@
             >NordVPN for Linux</span
           >
         </q-toolbar-title>
-
-        <Status />
       </q-toolbar>
     </q-header>
 
@@ -120,6 +118,7 @@
 
     <q-page-container>
       <router-view />
+      <Status />
     </q-page-container>
 
     <Sudo :dialog="sudo" />

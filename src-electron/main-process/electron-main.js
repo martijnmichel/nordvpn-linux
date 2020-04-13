@@ -125,6 +125,13 @@ ipcMain.on("update:status", (event, data) => {
         label: data.status
       },
       {
+        label: "Quick connect",
+        type: "normal",
+        click: (item, window, event) => {
+          mainWindow.webContents.send("terminal:command", "connect");
+        }
+      },
+      {
         type: "separator"
       },
       { label: "Minimize", role: "minimize" },

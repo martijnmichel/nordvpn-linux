@@ -9,13 +9,7 @@ require("electron").ipcRenderer.on("terminal:command", function(
   event,
   message
 ) {
-  switch (message) {
-    case "disconnect":
-      window.ptyProcess.write("nordvpn disconnect\r");
-    default:
-      return;
-  }
-  // Prints "whoooooooh!"
+  window.ptyProcess.write(`nordvpn ${message}\r`);
 });
 
 export default {

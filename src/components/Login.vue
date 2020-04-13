@@ -72,11 +72,18 @@ export default {
     window.ptyProcess.onData(async data => {
       console.log(data);
 
-      /**
-       * Catch some response from nordvpn cli
-       */
+      if (data.includes("Command not found")) {
+        this.$q.notify({
+          type: "negative",
+          message: `Please install the nordvpn CLI tool, then restart the app.`
+        });
 
-      if (data.includes("Username or password is not correct")) {
+        /**
+         *
+         * Catch some response from nordvpn cli
+         *
+         */
+      } else if (data.includes("Username or password is not correct")) {
         this.progress = "username";
         this.$root.$emit("update:login", true);
         this.$q.notify({
@@ -113,10 +120,20 @@ export default {
         this.$store.commit("setLogin", true);
 
         this.setStatus();
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("You are logged out.")) {
         // LOGGED OUT
         this.$store.commit("setLogin", false);
         this.setStatus();
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("You are already logged in")) {
         // LOGGED IN
         this.$store.commit("setLogin", true);
@@ -128,6 +145,11 @@ export default {
           message: `Welcome back to NordVPN!`
         });
         this.getAccount();
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("Whoops! We couldn't connect you")) {
         this.$q.notify({
           type: "negative",
@@ -135,21 +157,34 @@ export default {
         });
 
         this.setStatus();
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("You are connected to")) {
         this.setStatus();
         this.$q.notify({
           type: "positive",
           message: `You are succesfully connected.`
         });
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("You are disconnected from NordVPN.")) {
         this.setStatus();
         this.$q.notify({
           type: "positive",
           message: `You have succesfully disconnected from NordVPN.`
         });
-      }
-
-      if (data.includes("Please enter your login details")) {
+        /**
+         *
+         *
+         *
+         */
+      } else if (data.includes("Please enter your login details")) {
         this.$root.$emit("update:login", true);
       }
     });
