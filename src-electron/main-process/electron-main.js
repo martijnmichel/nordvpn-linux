@@ -44,10 +44,10 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: process.env.NODE_ENV === "production" ? 800 : 1600,
-    height: process.env.NODE_ENV === "production" ? 600 : 900,
+    width: 900,
+    height: 675,
     useContentSize: true,
-    resizable: process.env.NODE_ENV === "production" ? false : true,
+    resizable: false,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
@@ -60,33 +60,19 @@ function createWindow() {
 
   tray = new Tray(
     nativeImage.createFromPath(
-      path.join(__dirname, "../icons/linux-128x128.png.png")
+      path.join(__dirname, "../icons/linux-128x128.png")
     )
   );
   contextMenu = Menu.buildFromTemplate([
-    {
-      id: "status",
-      label: "Status: Connected to NL #290",
-      type: "normal",
-      enabled: false
-    },
     { label: "Minimize", role: "minimize" },
     { label: "Quit", role: "quit" }
   ]);
   tray.setToolTip("NordVPN");
   tray.setContextMenu(contextMenu);
 
-  tray.on("click", function() {
-    tray.popUpContextMenu();
-  });
-
   //if (process.env.NODE_ENV === "production") mainWindow.setMenu(null);
 
   mainWindow.loadURL(process.env.APP_URL);
-
-  mainWindow.webContents.on("did-finish-load", function() {
-    mainWindow.webContents.send("ping");
-  });
 
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -107,10 +93,6 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
-
-ipcMain.on("ping", event => {
-  event.sender.send("ping");
 });
 
 ipcMain.on("update:status", (event, data) => {

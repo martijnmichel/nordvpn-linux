@@ -11,3 +11,9 @@ export default {
   mounted() {}
 };
 </script>
+
+<style lang="stylus">
+body {
+  overflow hidden
+}
+</style>

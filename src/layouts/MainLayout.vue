@@ -1,13 +1,12 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
           flat
           dense
-          round
           @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="menu"
+          icon="list_alt"
           aria-label="Menu"
         />
 
@@ -21,6 +20,14 @@
             >NordVPN for Linux</span
           >
         </q-toolbar-title>
+        <q-space />
+        <q-btn
+          flat
+          dense
+          @click="settingsDialog = !settingsDialog"
+          icon="settings"
+          aria-label="Menu"
+        />
       </q-toolbar>
     </q-header>
 
@@ -29,47 +36,63 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
-      :width="500"
+      :width="200"
+      behavior="desktop"
     >
-      <q-toolbar class="bg-grey-3">
-        <q-img
-          src="statics/nordvpn-for-pc-windows-mac.png"
-          height="32px"
-          width="32px"
-        />
-        <q-space />
-        <q-btn
-          icon="logout"
-          round
-          flat
-          dense
-          @click="logout()"
-          v-if="$store.state.isLoggedIn"
-        />
-      </q-toolbar>
-      <q-item v-if="$store.state.isLoggedIn">
-        <q-item-section>
-          Logged in as: <br />
-          VPN:
-        </q-item-section>
-        <q-item-section>
-          {{ $store.state.account.emailaddress }}<br />
-          {{ $store.state.account.vpnservice }}
-        </q-item-section>
-      </q-item>
+      <ServerList />
+    </q-drawer>
+
+    <q-dialog v-model="settingsDialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Settings</div>
+        </q-card-section>
+        <q-card-section>
+          <q-toolbar class="bg-grey-3">
+            <q-img
+              src="statics/nordvpn-for-pc-windows-mac.png"
+              height="32px"
+              width="32px"
+            />
+            <q-space />
+            <q-btn
+              icon="logout"
+              round
+              flat
+              dense
+              @click="logout()"
+              v-if="$store.state.isLoggedIn"
+            />
+          </q-toolbar>
+          <q-item v-if="$store.state.isLoggedIn">
+            <q-item-section>
+              Logged in as: <br />
+              VPN:
+            </q-item-section>
+            <q-item-section>
+              {{ $store.state.account.emailaddress }}<br />
+              {{ $store.state.account.vpnservice }}
+            </q-item-section>
+          </q-item>
+          <!--
       <q-expansion-item label="Options" icon="account_circle" group="1">
         <Options />
       </q-expansion-item>
-      <q-expansion-item
-        default-opened
-        label="Settings"
-        icon="settings"
-        group="1"
-      >
-        <Settings />
-      </q-expansion-item>
-      <q-btn @click="test()" />
-    </q-drawer>
+      -->
+          <q-expansion-item
+            default-opened
+            label="Settings"
+            icon="settings"
+            group="1"
+          >
+            <Settings />
+          </q-expansion-item>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-footer>
       <div class="row">
@@ -132,7 +155,8 @@ import Terminal from "src/components/Terminal.vue";
 import Status from "src/components/Status";
 import Sudo from "src/components/Sudo.vue";
 import Login from "src/components/Login.vue";
-import Options from "src/components/Options.vue";
+import ServerList from "src/components/ServerList.vue";
+//import Options from "src/components/Options.vue";
 
 export default {
   name: "MainLayout",
@@ -142,7 +166,8 @@ export default {
     Terminal,
     Status,
     Sudo,
-    Options,
+    ServerList,
+    //Options,
     Login
   },
 
@@ -191,6 +216,7 @@ export default {
     return {
       leftDrawerOpen: false,
       bottomNav: false,
+      settingsDialog: false,
       tab: null,
       sudo: false,
       login: false,

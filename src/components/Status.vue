@@ -59,7 +59,7 @@
 
 <style lang="scss" scoped>
 #status {
-  position: fixed;
+  position: relative;
   bottom: 100px;
   width: 600px;
   left: 50%;
