@@ -144,6 +144,16 @@
       <Status />
     </q-page-container>
 
+    <q-page-sticky position="top-right">
+      <q-circular-progress
+        v-if="connecting"
+        indeterminate
+        size="50px"
+        color="primary"
+        class="q-ma-md"
+      />
+    </q-page-sticky>
+
     <Sudo :dialog="sudo" />
     <Login :dialog="login" />
   </q-layout>
@@ -184,11 +194,16 @@ export default {
     this.$root.$on("update:login", v => {
       this.login = v;
     });
+    this.$root.$on("update:connecting", v => {
+      console.log("updating status connection");
+      this.connecting = v;
+    });
   },
 
   beforeDestroy() {
     this.$root.$off("update:sudo");
     this.$root.$off("update:login");
+    this.$root.$off("update:connecting");
   },
 
   methods: {
@@ -217,6 +232,7 @@ export default {
       leftDrawerOpen: false,
       bottomNav: false,
       settingsDialog: false,
+      connecting: false,
       tab: null,
       sudo: false,
       login: false,

@@ -165,8 +165,17 @@ export default {
          *
          *
          */
+      } else if (data.includes("Connecting to")) {
+        // LOGGED OUT
+        this.$root.$emit("update:connecting", true);
+        /**
+         *
+         *
+         *
+         */
       } else if (data.includes("You are connected to")) {
         this.setStatus();
+        this.$root.$emit("update:connecting", false);
 
         this.$q.notify({
           type: "positive",
