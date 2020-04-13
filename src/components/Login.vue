@@ -66,6 +66,9 @@ export default {
       default: false
     }
   },
+  beforeDestroy() {
+    window.ptyProcess.off();
+  },
   created() {
     window.ptyProcess.write("nordvpn login\r");
 
@@ -164,6 +167,7 @@ export default {
          */
       } else if (data.includes("You are connected to")) {
         this.setStatus();
+
         this.$q.notify({
           type: "positive",
           message: `You are succesfully connected.`
@@ -215,6 +219,7 @@ export default {
         });
         this.$store.commit("setStatus", status);
         this.$q.electron.ipcRenderer.send("update:status", status);
+        this.$root.$emit("update:worldmap");
       });
     },
     getAccount() {

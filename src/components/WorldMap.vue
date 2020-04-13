@@ -19,6 +19,7 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 //import am4themes_dataviz from "src/node_modules/@amcharts/amcharts4/themes/themes/dataviz.js";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+const axios = require("axios");
 export default {
   name: "WorldMap",
   data() {
@@ -28,6 +29,7 @@ export default {
   },
   beforeDestroy() {
     this.chart.dispose();
+    this.$root.$off("update:worldmap");
   },
   mounted() {
     let map = document.getElementById("world-map");
@@ -77,20 +79,27 @@ export default {
     let as = polygonTemplate.states.create("active");
     as.properties.fill = this.chart.colors.getIndex(0);
 
-    this.chart.events.on("ready", () => {
-      if (!this.$store.state.status.country) return false;
-      const axios = require("axios");
+    this.$root.$on("update:worldmap", () => {
+      polygonSeries.mapPolygons.each(function(item) {
+        item.isActive = false;
+      });
 
-      // Make a request for a user with a given ID
+      if (!this.$store.state.status.country) {
+        this.chart.goHome();
+        return false;
+      }
       axios
         .get(
           `https://restcountries.eu/rest/v2/name/${this.$store.state.status.country}?fullText=true`
         )
-        .then(function(response) {
-          // handle success
+        .then(response => {
           polygonSeries.getPolygonById(
             response.data[0].alpha2Code
           ).isActive = true;
+
+          this.chart.zoomToMapObject(
+            polygonSeries.getPolygonById(response.data[0].alpha2Code)
+          );
         });
     });
 
@@ -111,8 +120,6 @@ export default {
       // get object info
       let landcode = ev.target.dataItem.dataContext.id;
       await window.ptyProcess.write(`nordvpn connect ${landcode}\r`);
-
-      this.$root.$emit("updateStatus");
     });
 
     // Add image series
