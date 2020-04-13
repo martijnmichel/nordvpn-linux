@@ -77,6 +77,7 @@ export default {
 
       if (data.includes("Command not found")) {
         this.$q.notify({
+          position: "top",
           type: "negative",
           message: `Please install the nordvpn CLI tool, then restart the app.`
         });
@@ -90,6 +91,7 @@ export default {
         this.progress = "username";
         this.$root.$emit("update:login", true);
         this.$q.notify({
+          position: "top",
           type: "negative",
           message: `Username or password is not correct.`
         });
@@ -104,6 +106,7 @@ export default {
         this.progress = "username";
         window.ptyProcess.write("nordvpn login\r");
         this.$q.notify({
+          position: "top",
           type: "warning",
           message: `Too many login attempts, please start over.`
         });
@@ -116,6 +119,7 @@ export default {
       } else if (data.includes("Welcome to NordVPN!")) {
         // SUCCESS
         this.$q.notify({
+          position: "top",
           type: "positive",
           message: `Welcome to NordVPN!`
         });
@@ -144,6 +148,7 @@ export default {
         this.setStatus();
 
         this.$q.notify({
+          position: "top",
           type: "positive",
           message: `Welcome back to NordVPN!`
         });
@@ -155,6 +160,7 @@ export default {
          */
       } else if (data.includes("Whoops! We couldn't connect you")) {
         this.$q.notify({
+          position: "top",
           type: "negative",
           message: `Whoops! We couldn't connect you to this country. Please try again. If the problem persists, contact our customer support.`
         });
@@ -178,6 +184,7 @@ export default {
         this.$root.$emit("update:connecting", false);
 
         this.$q.notify({
+          position: "top",
           type: "positive",
           message: `You are succesfully connected.`
         });
@@ -189,6 +196,7 @@ export default {
       } else if (data.includes("You are disconnected from NordVPN.")) {
         this.setStatus();
         this.$q.notify({
+          position: "top",
           type: "positive",
           message: `You have succesfully disconnected from NordVPN.`
         });
