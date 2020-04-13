@@ -2,8 +2,8 @@
 
 Be warned, this app will make connecting to NordVPN as easy as on windows and macos. It uses Electron and NordVPN-cli under the hood.
 
-![NordVPN Linux](/screens/Screenshot_20200228_083241.png?raw=true "Optional Title")
-![NordVPN Linux Settings](/screens/Screenshot_20200228_083319.png?raw=true "Optional Title")
+![NordVPN Linux](/screens/Screenshot_20200413_110815.png?raw=true "Optional Title")
+![NordVPN Linux](/screens/Screenshot_20200413_110856?raw=true "Optional Title")
 
 # How to use
 
@@ -22,7 +22,7 @@ The app will prompt your nordvpn credentials when opening the app or trying to c
 Click on a country to connect to a server. You will be prompted for your credentials if youre not logged in.
 
 ## Change settings
-Open the popup menu by clicking on the bars on the topleft, change any setting you like. They are saved automatically.
+Open the popup menu by clicking on the bars on the topright, change any setting you like. They are saved automatically.
 
 # If you want to contribute
 
