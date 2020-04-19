@@ -15,6 +15,10 @@ NordVPN CLI: Install the nordvpn-cli for your distro. More info is on their webs
 ## Install
 Double-click on your downloaded .AppImage or .snap binary.
 
+OR:
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/nordvpn-linux)
+
 ## Login
 The app will prompt your nordvpn credentials when opening the app or trying to connect to a server while youre not logged in. Credentials are saved automagically.
 
