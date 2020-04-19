@@ -1,7 +1,7 @@
 name: nordvpn-linux # you probably want to 'snapcraft register <name>'
 base: core18 # the base snap is the execution environment for this snap
 version: "0.6" # just for humans, typically '1.2+git' or '1.3.2'
-summary: Be warned, this app will make connecting to NordVPN as easy as on windows and macos. # 79 char long summary
+summary: This app will make connecting to NordVPN very easy! # 79 char long summary
 description: |
   Be warned, this app will make connecting to NordVPN as easy as on windows and macos. It uses Electron and NordVPN-cli under the hood.
 

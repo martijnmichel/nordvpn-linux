@@ -1,5 +1,5 @@
 {
-  "name": "nordvpn-electron",
+  "name": "nordvpn-linux",
   "version": "0.6.0",
   "description": "NordVPN for Linux",
   "productName": "NordVPN for Linux",
@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "rebuild": "electron-rebuild -f -w node-pty"
+    "rebuild": "electron-rebuild -f -w node-pty",
+    "push:snap": "snapcraft push dist/electron/Packaged/nordvpn-linux_0.6.0_amd64.snap"
   },
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.1",
